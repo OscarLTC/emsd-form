@@ -1,0 +1,63 @@
+.login-pagina {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+  background: var(--superficie);
+}
+
+.login {
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.login__marca {
+  text-align: center;
+}
+
+.login__logo {
+  display: grid;
+  place-items: center;
+  width: 62px;
+  height: 62px;
+  margin: 0 auto 14px;
+  border-radius: 18px;
+  background: var(--azul);
+  color: #fff;
+}
+
+.login__marca h1 {
+  margin: 0;
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+.login__marca p {
+  margin: 6px 0 0;
+  color: var(--texto-suave);
+  font-size: 13.5px;
+}
+
+.login__form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+@media (min-width: 600px) {
+  .login-pagina {
+    background: var(--fondo);
+  }
+
+  .login {
+    max-width: 420px;
+    padding: 36px 32px;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 16px;
+    box-shadow: var(--sombra);
+  }
+}
