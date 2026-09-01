@@ -3,7 +3,7 @@
   display: grid;
   place-items: center;
   padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-  background: var(--superficie);
+  background: var(--surface);
 }
 
 .login {
@@ -25,19 +25,20 @@
   height: 62px;
   margin: 0 auto 14px;
   border-radius: 18px;
-  background: var(--azul);
-  color: #fff;
+  background: var(--brand);
+  color: var(--on-brand);
 }
 
 .login__brand h1 {
   margin: 0;
   font-size: 20px;
   line-height: 1.25;
+  color: var(--navy);
 }
 
 .login__brand p {
   margin: 6px 0 0;
-  color: var(--texto-suave);
+  color: var(--text-muted);
   font-size: 13.5px;
 }
 
@@ -49,15 +50,15 @@
 
 @media (min-width: 600px) {
   .login-page {
-    background: var(--fondo);
+    background: var(--bg);
   }
 
   .login {
     max-width: 420px;
     padding: 36px 32px;
-    background: var(--superficie);
-    border: 1px solid var(--borde);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 16px;
-    box-shadow: var(--sombra);
+    box-shadow: var(--shadow);
   }
 }

@@ -10,13 +10,13 @@
   gap: 7px;
   font-size: 13.5px;
   font-weight: 600;
-  color: var(--azul);
+  color: var(--navy);
 }
 
 .field__error {
   margin: 0;
   font-size: 12.5px;
-  color: var(--rojo);
+  color: var(--red);
 }
 
 .sync-bar {
@@ -28,8 +28,8 @@
   padding: 8px 12px;
   border: 0;
   font-size: 12.5px;
-  font-weight: 600;
-  color: #fff;
+  font-weight: 700;
+  color: var(--on-navy);
 }
 
 .sync-bar:disabled {
@@ -37,15 +37,16 @@
 }
 
 .sync-bar--active {
-  background: var(--azul-oscuro);
+  background: var(--navy-soft);
 }
 
 .sync-bar--pending {
-  background: var(--ambar);
+  background: var(--brand);
+  color: var(--on-brand);
 }
 
 .sync-bar--offline {
-  background: #4b5563;
+  background: var(--slate);
 }
 
 .nav {
@@ -61,7 +62,7 @@
   gap: 11px;
   padding: 0 6px 16px;
   margin-bottom: 8px;
-  border-bottom: 1px solid var(--borde);
+  border-bottom: 1px solid var(--border);
 }
 
 .nav__info {
@@ -79,7 +80,7 @@
 .nav__info p {
   margin: 2px 0 0;
   font-size: 12.5px;
-  color: var(--texto-suave);
+  color: var(--text-muted);
 }
 
 .nav__avatar {
@@ -88,8 +89,8 @@
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  background: var(--azul-claro);
-  color: var(--azul);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
   flex-shrink: 0;
 }
 
@@ -100,31 +101,31 @@
   width: 100%;
   padding: 12px 10px;
   border: 0;
-  border-radius: var(--radio);
+  border-radius: var(--radius);
   background: transparent;
-  color: var(--texto);
+  color: var(--text);
   text-align: left;
   text-decoration: none;
   font-weight: 500;
 }
 
 .nav__item:hover {
-  background: var(--campo);
+  background: var(--field);
 }
 
 .nav__item.active {
-  background: var(--azul-claro);
-  color: var(--azul);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
   font-weight: 600;
 }
 
 .nav__item--logout {
   margin-top: auto;
-  color: var(--rojo);
+  color: var(--red);
 }
 
 .nav__item--logout:hover {
-  background: var(--rojo-bg);
+  background: var(--red-soft);
 }
 
 .nav__badge {
@@ -132,8 +133,8 @@
   min-width: 22px;
   padding: 1px 7px;
   border-radius: 999px;
-  background: var(--ambar);
-  color: #fff;
+  background: var(--brand);
+  color: var(--on-brand);
   font-size: 12px;
   font-weight: 700;
   text-align: center;
@@ -149,7 +150,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(15, 23, 42, 0.45);
+  background: oklch(0.2732 0.0953 263.48 / 0.55);
 }
 
 .menu__panel {
@@ -157,10 +158,10 @@
   inset: 0 auto 0 0;
   width: min(280px, 82%);
   display: flex;
-  background: var(--superficie);
+  background: var(--surface);
   padding: 20px 14px;
   padding-top: calc(20px + env(safe-area-inset-top));
-  box-shadow: var(--sombra);
+  box-shadow: var(--shadow);
 }
 
 @media (min-width: 900px) {
@@ -175,37 +176,39 @@
   }
 
   .app__sidebar .nav__user {
-    border-bottom-color: rgba(255, 255, 255, 0.18);
+    border-bottom-color: rgb(255 255 255 / 0.18);
   }
 
   .app__sidebar .nav__info p {
-    color: rgba(255, 255, 255, 0.68);
+    color: rgb(255 255 255 / 0.68);
   }
 
   .app__sidebar .nav__avatar {
-    background: rgba(255, 255, 255, 0.14);
-    color: #fff;
+    background: rgb(255 255 255 / 0.14);
+    color: var(--brand);
   }
 
   .app__sidebar .nav__item {
-    color: rgba(255, 255, 255, 0.86);
+    color: rgb(255 255 255 / 0.86);
   }
 
   .app__sidebar .nav__item:hover {
-    background: rgba(255, 255, 255, 0.1);
+    background: rgb(255 255 255 / 0.1);
   }
 
+  /* Naranja sobre navy da 7:1, así que el estado activo puede ir en marca. */
   .app__sidebar .nav__item.active {
-    background: rgba(255, 255, 255, 0.16);
-    color: #fff;
+    background: rgb(255 255 255 / 0.1);
+    color: var(--brand);
+    box-shadow: inset 3px 0 0 var(--brand);
   }
 
   .app__sidebar .nav__item--logout {
-    color: #ffb4b4;
+    color: oklch(0.78 0.11 27);
   }
 
   .app__sidebar .nav__item--logout:hover {
-    background: rgba(255, 180, 180, 0.14);
+    background: oklch(0.78 0.11 27 / 0.14);
   }
 }
 
@@ -222,7 +225,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(15, 23, 42, 0.45);
+  background: oklch(0.2732 0.0953 263.48 / 0.55);
 }
 
 .modal__panel {
@@ -233,9 +236,9 @@
   align-items: center;
   gap: 10px;
   padding: 24px 20px 20px;
-  border-radius: var(--radio);
-  background: var(--superficie);
-  box-shadow: var(--sombra);
+  border-radius: 16px;
+  background: var(--surface);
+  box-shadow: 0 20px 48px oklch(0.2732 0.0953 263.48 / 0.28);
   text-align: center;
 }
 
@@ -245,8 +248,8 @@
   width: 56px;
   height: 56px;
   border-radius: 50%;
-  background: var(--verde-bg);
-  color: var(--verde);
+  background: var(--green-soft);
+  color: var(--green);
 }
 
 .modal__title {
@@ -257,7 +260,7 @@
 .modal__detail {
   margin: 0 0 6px;
   font-size: 13.5px;
-  color: var(--texto-suave);
+  color: var(--text-muted);
 }
 
 .dialog {
@@ -273,7 +276,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: rgba(15, 23, 42, 0.5);
+  background: oklch(0.2732 0.0953 263.48 / 0.6);
 }
 
 .dialog__panel {
@@ -282,8 +285,8 @@
   max-width: 380px;
   padding: 22px 20px 18px;
   border-radius: 16px;
-  background: var(--superficie);
-  box-shadow: 0 20px 48px rgba(16, 24, 40, 0.22);
+  background: var(--surface);
+  box-shadow: 0 20px 48px oklch(0.2732 0.0953 263.48 / 0.28);
   text-align: center;
 }
 
@@ -294,13 +297,13 @@
   height: 46px;
   margin: 0 auto 12px;
   border-radius: 50%;
-  background: var(--azul-claro);
-  color: var(--azul);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
 }
 
 .dialog__icon--danger {
-  background: var(--rojo-bg);
-  color: var(--rojo);
+  background: var(--red-soft);
+  color: var(--red);
 }
 
 .dialog__panel h2 {
@@ -311,12 +314,12 @@
 .dialog__message {
   margin: 0 0 20px;
   font-size: 13.5px;
-  color: var(--texto-suave);
+  color: var(--text-muted);
   line-height: 1.5;
 }
 
 .dialog__message strong {
-  color: var(--texto);
+  color: var(--text);
 }
 
 .dialog__actions {
@@ -325,9 +328,10 @@
 }
 
 .button--danger {
-  background: var(--rojo);
+  background: var(--red);
+  color: var(--on-navy);
 }
 
 .button--danger:hover:not(:disabled) {
-  background: #b91c1c;
+  background: oklch(0.5 0.19 27);
 }

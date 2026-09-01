@@ -12,7 +12,7 @@ export default defineConfig({
         name: 'Formulario móvil de contingencia',
         short_name: 'Contingencia',
         description: 'Registro manual de pedidos con soporte offline',
-        theme_color: '#1358d8',
+        theme_color: '#0d2355',
         background_color: '#ffffff',
         display: 'standalone',
         orientation: 'portrait',

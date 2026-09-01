@@ -11,29 +11,33 @@
   align-items: center;
   gap: 6px;
   padding: 12px 6px;
-  border-radius: var(--radio);
-  border: 1px solid var(--borde);
-  background: var(--superficie);
-  color: var(--texto-suave);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
   font-size: 12.5px;
   font-weight: 600;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
 
+/* Entregado y fallido se quedan en verde y rojo: son semánticos, no de marca.
+   Pintarlos con el naranja de Dinet borraría la lectura inmediata. */
 .result--delivered {
-  color: var(--verde);
-  border-color: var(--verde-borde);
-  background: var(--verde-bg);
+  color: var(--green);
+  border-color: var(--green-line);
+  background: var(--green-soft);
 }
 
 .result--failed {
-  color: var(--rojo);
-  border-color: var(--rojo-borde);
-  background: var(--rojo-bg);
+  color: var(--red);
+  border-color: var(--red-line);
+  background: var(--red-soft);
 }
 
 .result--active {
-  box-shadow: inset 0 0 0 2px currentColor;
+  box-shadow: inset 0 0 0 2px currentcolor;
 }
 
 .photos {
@@ -60,8 +64,8 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: var(--radio);
-  border: 1px solid var(--borde);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
 }
 
 .photos__remove {
@@ -75,8 +79,8 @@
   padding: 0;
   border: 0;
   border-radius: 8px;
-  background: rgba(17, 24, 39, 0.66);
-  color: #fff;
+  background: oklch(0.2732 0.0953 263.48 / 0.7);
+  color: var(--on-navy);
 }
 
 .photos__button {
@@ -86,10 +90,10 @@
   gap: 8px;
   width: 100%;
   padding: 16px;
-  border: 1.5px dashed var(--azul);
-  border-radius: var(--radio);
-  background: var(--azul-claro);
-  color: var(--azul);
+  border: 1.5px dashed var(--brand);
+  border-radius: var(--radius);
+  background: var(--brand-soft);
+  color: var(--brand-ink);
   font-weight: 600;
 }
 
@@ -101,7 +105,7 @@
 .photos__counter {
   margin: 0;
   font-size: 12.5px;
-  color: var(--texto-suave);
+  color: var(--text-muted);
 }
 
 .queue {
@@ -116,20 +120,20 @@
 .queue__empty {
   margin: 32px 0;
   text-align: center;
-  color: var(--texto-suave);
+  color: var(--text-muted);
 }
 
 .queue__item {
   padding: 13px;
-  border: 1px solid var(--borde);
-  border-left: 3px solid var(--ambar);
-  border-radius: var(--radio);
-  background: var(--superficie);
-  box-shadow: var(--sombra);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--brand);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
 }
 
 .queue__item--error {
-  border-left-color: var(--rojo);
+  border-left-color: var(--red);
 }
 
 .queue__header {
@@ -142,7 +146,7 @@
 .queue__customer {
   margin: 5px 0 0;
   font-size: 13px;
-  color: var(--texto-suave);
+  color: var(--text-muted);
 }
 
 .queue__meta,
@@ -152,11 +156,11 @@
   gap: 5px;
   margin: 7px 0 0;
   font-size: 12.5px;
-  color: var(--texto-suave);
+  color: var(--text-muted);
 }
 
 .queue__error {
-  color: var(--rojo);
+  color: var(--red);
 }
 
 .queue__discard {
@@ -165,11 +169,17 @@
   gap: 6px;
   margin-top: 10px;
   padding: 6px 10px;
-  border: 1px solid var(--borde);
+  border: 1px solid var(--border);
   border-radius: 8px;
   background: transparent;
-  color: var(--texto-suave);
+  color: var(--text-muted);
   font-size: 12.5px;
+}
+
+.queue__discard:hover {
+  border-color: var(--red-line);
+  background: var(--red-soft);
+  color: var(--red);
 }
 
 .chip {
@@ -180,13 +190,13 @@
 }
 
 .chip--delivered {
-  background: var(--verde-bg);
-  color: var(--verde);
+  background: var(--green-soft);
+  color: var(--green);
 }
 
 .chip--failed {
-  background: var(--rojo-bg);
-  color: var(--rojo);
+  background: var(--red-soft);
+  color: var(--red);
 }
 
 .form {
@@ -204,11 +214,11 @@
 @media (min-width: 900px) {
   .form,
   .queue__panel {
-    background: var(--superficie);
-    border: 1px solid var(--borde);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: 14px;
     padding: 26px;
-    box-shadow: var(--sombra);
+    box-shadow: var(--shadow);
   }
 
   .form {
