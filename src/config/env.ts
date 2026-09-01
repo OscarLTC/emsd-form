@@ -1,9 +1,9 @@
-const MODOS = ['supabase', 'http'] as const;
+const API_MODES = ['supabase', 'http'] as const;
 
-type ModoApi = (typeof MODOS)[number];
+type ApiMode = (typeof API_MODES)[number];
 
-const toModo = (value: string | undefined): ModoApi =>
-  MODOS.includes(value as ModoApi) ? (value as ModoApi) : 'supabase';
+const toApiMode = (value: string | undefined): ApiMode =>
+  API_MODES.includes(value as ApiMode) ? (value as ApiMode) : 'supabase';
 
 const toNumber = (value: string | undefined, fallback: number): number => {
   const parsed = Number(value);
@@ -14,15 +14,17 @@ export const env = {
   debug: import.meta.env.VITE_DEBUG === 'true' || import.meta.env.DEV,
   appName: import.meta.env.VITE_APP_NAME || 'Formulario móvil de contingencia',
   api: {
-    mode: toModo(import.meta.env.VITE_API_MODE),
+    mode: toApiMode(import.meta.env.VITE_API_MODE),
     baseUrl: (import.meta.env.VITE_API_URL || '').replace(/\/$/, ''),
     timeoutMs: toNumber(import.meta.env.VITE_API_TIMEOUT_MS, 15000),
+    requestTimeoutMs: toNumber(import.meta.env.VITE_REQUEST_TIMEOUT_MS, 20000),
+    uploadTimeoutMs: toNumber(import.meta.env.VITE_UPLOAD_TIMEOUT_MS, 60000),
   },
   supabase: {
     url: import.meta.env.VITE_SUPABASE_URL || '',
     anonKey: import.meta.env.VITE_SUPABASE_ANON_KEY || '',
     bucket: import.meta.env.VITE_SUPABASE_BUCKET || 'evidence',
-    configurado: Boolean(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY),
+    configured: Boolean(import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY),
   },
   session: {
     storageKey: import.meta.env.VITE_SESSION_STORAGE_KEY || 'emsd.session',

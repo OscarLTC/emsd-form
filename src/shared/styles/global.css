@@ -84,11 +84,11 @@ select {
   min-height: 100dvh;
 }
 
-.app__lateral {
+.app__sidebar {
   display: none;
 }
 
-.app__principal {
+.app__main {
   display: flex;
   flex-direction: column;
   min-height: 100dvh;
@@ -101,7 +101,7 @@ select {
   z-index: 20;
 }
 
-.encabezado {
+.header {
   background: var(--azul);
   color: #fff;
   display: flex;
@@ -111,7 +111,7 @@ select {
   padding-top: calc(14px + env(safe-area-inset-top));
 }
 
-.encabezado__titulo {
+.header__title {
   flex: 1;
   text-align: center;
   font-size: 15px;
@@ -120,11 +120,11 @@ select {
   margin: 0;
 }
 
-.encabezado__pagina {
+.header__page {
   display: none;
 }
 
-.encabezado__accion {
+.header__action {
   background: transparent;
   border: 0;
   color: inherit;
@@ -134,23 +134,23 @@ select {
   border-radius: 8px;
 }
 
-.encabezado__accion:active {
+.header__action:active {
   background: rgba(255, 255, 255, 0.18);
 }
 
-.encabezado__camion {
+.header__truck {
   display: grid;
   place-items: center;
 }
 
-.contenido {
+.content {
   flex: 1;
   width: 100%;
   padding: 16px;
   padding-bottom: calc(24px + env(safe-area-inset-bottom));
 }
 
-.boton {
+.button {
   width: 100%;
   display: inline-flex;
   align-items: center;
@@ -164,26 +164,26 @@ select {
   font-weight: 600;
 }
 
-.boton:hover:not(:disabled) {
+.button:hover:not(:disabled) {
   background: var(--azul-oscuro);
 }
 
-.boton:disabled {
+.button:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
-.boton--secundario {
+.button--secondary {
   background: var(--superficie);
   color: var(--azul);
   border: 1px solid var(--borde);
 }
 
-.boton--secundario:hover:not(:disabled) {
+.button--secondary:hover:not(:disabled) {
   background: var(--azul-claro);
 }
 
-.aviso {
+.notice {
   display: flex;
   align-items: flex-start;
   gap: 8px;
@@ -193,19 +193,19 @@ select {
   font-size: 13.5px;
 }
 
-.aviso--ok {
+.notice--ok {
   background: var(--verde-bg);
   border: 1px solid var(--verde-borde);
   color: #14733a;
 }
 
-.aviso--error {
+.notice--error {
   background: var(--rojo-bg);
   border: 1px solid var(--rojo-borde);
   color: #a01c1c;
 }
 
-.cargando {
+.loading {
   min-height: 100dvh;
   display: grid;
   place-items: center;
@@ -213,7 +213,7 @@ select {
 }
 
 @media (min-width: 600px) {
-  .contenido {
+  .content {
     max-width: 560px;
     margin: 0 auto;
     padding: 24px 20px 32px;
@@ -226,7 +226,7 @@ select {
     grid-template-columns: 268px 1fr;
   }
 
-  .app__lateral {
+  .app__sidebar {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -238,7 +238,7 @@ select {
     color: #fff;
   }
 
-  .app__marca {
+  .app__brand {
     display: flex;
     align-items: center;
     gap: 11px;
@@ -258,7 +258,7 @@ select {
     flex-shrink: 0;
   }
 
-  .app__principal {
+  .app__main {
     background: var(--fondo);
   }
 
@@ -271,29 +271,29 @@ select {
     border-bottom: 1px solid var(--borde);
   }
 
-  .encabezado {
+  .header {
     flex: 1;
     background: transparent;
     color: var(--texto);
     padding: 17px 28px;
   }
 
-  .encabezado__titulo {
+  .header__title {
     text-align: left;
     font-size: 17px;
   }
 
-  .encabezado__app,
-  .encabezado__accion,
-  .encabezado__camion {
+  .header__app,
+  .header__action,
+  .header__truck {
     display: none;
   }
 
-  .encabezado__pagina {
+  .header__page {
     display: inline;
   }
 
-  .contenido {
+  .content {
     max-width: 980px;
     padding: 28px;
   }

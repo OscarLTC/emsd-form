@@ -27,7 +27,7 @@ export function createPersistentStore<T>(key: string, ttlMs: number) {
       try {
         localStorage.setItem(key, JSON.stringify(entry));
       } catch {
-        /* almacenamiento lleno o bloqueado: la sesión vive solo en memoria */
+        /* Storage full or blocked: the session lives in memory only. */
       }
     },
 

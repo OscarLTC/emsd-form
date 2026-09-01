@@ -7,6 +7,8 @@ interface ImportMetaEnv {
   readonly VITE_API_MODE?: 'supabase' | 'http';
   readonly VITE_API_URL?: string;
   readonly VITE_API_TIMEOUT_MS?: string;
+  readonly VITE_REQUEST_TIMEOUT_MS?: string;
+  readonly VITE_UPLOAD_TIMEOUT_MS?: string;
   readonly VITE_SUPABASE_URL: string;
   readonly VITE_SUPABASE_ANON_KEY: string;
   readonly VITE_SUPABASE_BUCKET?: string;

@@ -2,13 +2,13 @@ import { env } from '../../config/env';
 
 const OUTPUT_TYPE = 'image/jpeg';
 
-export async function comprimirImagen(file: File): Promise<Blob> {
+export async function compressImage(file: File): Promise<Blob> {
   try {
     const bitmap = await createImageBitmap(file);
-    const escala = Math.min(1, env.photo.maxWidth / bitmap.width);
+    const scale = Math.min(1, env.photo.maxWidth / bitmap.width);
     const canvas = document.createElement('canvas');
-    canvas.width = Math.round(bitmap.width * escala);
-    canvas.height = Math.round(bitmap.height * escala);
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
 
     const context = canvas.getContext('2d');
     if (!context) return file;

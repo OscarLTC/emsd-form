@@ -1,70 +1,70 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
-import { Campo } from '../../../shared/components/Campo';
+import { Field } from '../../../shared/components/Field';
 import { Icon } from '../../../shared/components/Icon';
 import { useAuth } from '../hooks/useAuth';
-import { IDENTIFICADOR } from '../constants/identificador';
+import { IDENTIFIER } from '../constants/identifier';
 
 export function LoginForm() {
-  const { login, autenticando, error } = useAuth();
-  const [usuario, setUsuario] = useState('');
-  const [clave, setClave] = useState('');
-  const [tocado, setTocado] = useState(false);
+  const { login, isAuthenticating, error } = useAuth();
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [touched, setTouched] = useState(false);
 
-  const incompleto = !usuario.trim() || !clave;
+  const incomplete = !username.trim() || !password;
 
-  const enviar = async (evento: FormEvent<HTMLFormElement>) => {
-    evento.preventDefault();
-    setTocado(true);
-    if (incompleto) return;
-    await login({ usuario: usuario.trim(), clave });
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setTouched(true);
+    if (incomplete) return;
+    await login({ username: username.trim(), password });
   };
 
   return (
-    <form className="login__form" onSubmit={enviar} noValidate>
-      <Campo
-        icono="usuario"
-        etiqueta={IDENTIFICADOR.etiqueta}
-        htmlFor="usuario"
-        error={tocado && !usuario.trim() ? IDENTIFICADOR.faltante : undefined}
+    <form className="login__form" onSubmit={submit} noValidate>
+      <Field
+        icon="user"
+        label={IDENTIFIER.label}
+        htmlFor="username"
+        error={touched && !username.trim() ? IDENTIFIER.missing : undefined}
       >
         <input
-          id="usuario"
-          type={IDENTIFICADOR.tipo}
-          value={usuario}
-          onChange={(evento) => setUsuario(evento.target.value)}
-          autoComplete={IDENTIFICADOR.autoComplete}
+          id="username"
+          type={IDENTIFIER.type}
+          value={username}
+          onChange={(event) => setUsername(event.target.value)}
+          autoComplete={IDENTIFIER.autoComplete}
           autoCapitalize="none"
-          inputMode={IDENTIFICADOR.tipo === 'email' ? 'email' : 'text'}
-          placeholder={IDENTIFICADOR.placeholder}
+          inputMode={IDENTIFIER.type === 'email' ? 'email' : 'text'}
+          placeholder={IDENTIFIER.placeholder}
         />
-      </Campo>
+      </Field>
 
-      <Campo
-        icono="candado"
-        etiqueta="Contraseña"
-        htmlFor="clave"
-        error={tocado && !clave ? 'Ingresa tu contraseña' : undefined}
+      <Field
+        icon="lock"
+        label="Contraseña"
+        htmlFor="password"
+        error={touched && !password ? 'Ingresa tu contraseña' : undefined}
       >
         <input
-          id="clave"
+          id="password"
           type="password"
-          value={clave}
-          onChange={(evento) => setClave(evento.target.value)}
+          value={password}
+          onChange={(event) => setPassword(event.target.value)}
           autoComplete="current-password"
           placeholder="••••••"
         />
-      </Campo>
+      </Field>
 
       {error && (
-        <p className="aviso aviso--error" role="alert">
-          <Icon name="alerta" size={18} />
+        <p className="notice notice--error" role="alert">
+          <Icon name="alert" size={18} />
           {error}
         </p>
       )}
 
-      <button type="submit" className="boton" disabled={autenticando}>
-        {autenticando ? 'Ingresando…' : 'Ingresar'}
+      <button type="submit" className="button" disabled={isAuthenticating}>
+        {isAuthenticating ? 'Ingresando…' : 'Ingresar'}
       </button>
     </form>
   );

@@ -2,31 +2,31 @@ import { env } from '../../config/env';
 import { Icon } from './Icon';
 
 interface AppHeaderProps {
-  titulo: string;
+  title: string;
   onMenu?: () => void;
-  onAtras?: () => void;
+  onBack?: () => void;
 }
 
-export function AppHeader({ titulo, onMenu, onAtras }: AppHeaderProps) {
+export function AppHeader({ title, onMenu, onBack }: AppHeaderProps) {
   return (
-    <header className="encabezado">
-      {onAtras ? (
-        <button type="button" className="encabezado__accion" onClick={onAtras} aria-label="Volver">
-          <Icon name="atras" size={22} />
+    <header className="header">
+      {onBack ? (
+        <button type="button" className="header__action" onClick={onBack} aria-label="Volver">
+          <Icon name="back" size={22} />
         </button>
       ) : (
-        <button type="button" className="encabezado__accion" onClick={onMenu} aria-label="Abrir menú">
+        <button type="button" className="header__action" onClick={onMenu} aria-label="Abrir menú">
           <Icon name="menu" size={22} />
         </button>
       )}
 
-      <h1 className="encabezado__titulo">
-        <span className="encabezado__app">{env.appName}</span>
-        <span className="encabezado__pagina">{titulo}</span>
+      <h1 className="header__title">
+        <span className="header__app">{env.appName}</span>
+        <span className="header__page">{title}</span>
       </h1>
 
-      <span className="encabezado__camion">
-        <Icon name="camion" size={22} />
+      <span className="header__truck">
+        <Icon name="truck" size={22} />
       </span>
     </header>
   );

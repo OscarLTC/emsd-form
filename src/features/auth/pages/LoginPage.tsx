@@ -6,19 +6,19 @@ import { useAuth } from '../hooks/useAuth';
 import { LoginForm } from '../components/LoginForm';
 
 export function LoginPage() {
-  const { autenticado } = useAuth();
+  const { isAuthenticated } = useAuth();
   const online = useOnlineStatus();
   const location = useLocation();
-  const destino = (location.state as { from?: string } | null)?.from ?? '/';
+  const target = (location.state as { from?: string } | null)?.from ?? '/';
 
-  if (autenticado) return <Navigate to={destino} replace />;
+  if (isAuthenticated) return <Navigate to={target} replace />;
 
   return (
-    <div className="login-pagina">
+    <div className="login-page">
       <div className="login">
-        <div className="login__marca">
+        <div className="login__brand">
           <span className="login__logo">
-            <Icon name="camion" size={30} />
+            <Icon name="truck" size={30} />
           </span>
           <h1>{env.appName}</h1>
           <p>Registro manual de pedidos</p>
@@ -27,8 +27,8 @@ export function LoginPage() {
         <LoginForm />
 
         {!online && (
-          <p className="aviso aviso--error">
-            <Icon name="sinSenal" size={18} />
+          <p className="notice notice--error">
+            <Icon name="noSignal" size={18} />
             Sin conexión. Necesitas señal para iniciar sesión; una vez dentro, la sesión queda
             guardada en el dispositivo.
           </p>

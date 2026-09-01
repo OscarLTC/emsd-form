@@ -13,8 +13,8 @@ function openConnection(): Promise<IDBDatabase> {
       const db = request.result;
       if (!db.objectStoreNames.contains(STORE_OUTBOX)) {
         const store = db.createObjectStore(STORE_OUTBOX, { keyPath: 'id' });
-        store.createIndex('estado', 'estado');
-        store.createIndex('creadoEn', 'creadoEn');
+        store.createIndex('status', 'status');
+        store.createIndex('createdAt', 'createdAt');
       }
     };
 

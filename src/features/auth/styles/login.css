@@ -1,4 +1,4 @@
-.login-pagina {
+.login-page {
   min-height: 100dvh;
   display: grid;
   place-items: center;
@@ -14,7 +14,7 @@
   gap: 24px;
 }
 
-.login__marca {
+.login__brand {
   text-align: center;
 }
 
@@ -29,13 +29,13 @@
   color: #fff;
 }
 
-.login__marca h1 {
+.login__brand h1 {
   margin: 0;
   font-size: 20px;
   line-height: 1.25;
 }
 
-.login__marca p {
+.login__brand p {
   margin: 6px 0 0;
   color: var(--texto-suave);
   font-size: 13.5px;
@@ -48,7 +48,7 @@
 }
 
 @media (min-width: 600px) {
-  .login-pagina {
+  .login-page {
     background: var(--fondo);
   }
 

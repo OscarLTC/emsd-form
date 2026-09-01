@@ -2,41 +2,41 @@ import { useState } from 'react';
 import type { ReactNode } from 'react';
 import { env } from '../../config/env';
 import { AppHeader } from './AppHeader';
-import { BarraSincronizacion } from './BarraSincronizacion';
-import { MenuLateral } from './MenuLateral';
-import { NavegacionLateral } from './NavegacionLateral';
+import { SyncBar } from './SyncBar';
+import { MobileMenu } from './MobileMenu';
+import { SideNav } from './SideNav';
 import { Icon } from './Icon';
 
 interface LayoutProps {
-  titulo: string;
-  onAtras?: () => void;
+  title: string;
+  onBack?: () => void;
   children: ReactNode;
 }
 
-export function Layout({ titulo, onAtras, children }: LayoutProps) {
-  const [menuAbierto, setMenuAbierto] = useState(false);
+export function Layout({ title, onBack, children }: LayoutProps) {
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
     <div className="app">
-      <aside className="app__lateral">
-        <div className="app__marca">
+      <aside className="app__sidebar">
+        <div className="app__brand">
           <span className="app__logo">
-            <Icon name="camion" size={22} />
+            <Icon name="truck" size={22} />
           </span>
           {env.appName}
         </div>
-        <NavegacionLateral />
+        <SideNav />
       </aside>
 
-      <div className="app__principal">
+      <div className="app__main">
         <div className="topbar">
-          <AppHeader titulo={titulo} onMenu={() => setMenuAbierto(true)} onAtras={onAtras} />
-          <BarraSincronizacion />
+          <AppHeader title={title} onMenu={() => setMenuOpen(true)} onBack={onBack} />
+          <SyncBar />
         </div>
-        <main className="contenido">{children}</main>
+        <main className="content">{children}</main>
       </div>
 
-      <MenuLateral abierto={menuAbierto} onCerrar={() => setMenuAbierto(false)} />
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
     </div>
   );
 }

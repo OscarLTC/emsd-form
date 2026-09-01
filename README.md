@@ -41,6 +41,8 @@ obligatorias; el resto tiene valores por defecto en `src/config/env.ts`.
 | `VITE_SYNC_MAX_ATTEMPTS` | Intentos antes de marcar un pedido como fallido |
 | `VITE_PHOTO_MAX_COUNT` | Máximo de fotos de evidencia por pedido |
 | `VITE_PHOTO_MAX_WIDTH` / `VITE_PHOTO_QUALITY` | Compresión aplicada a cada foto |
+| `VITE_REQUEST_TIMEOUT_MS` | Corte de una petición normal a Supabase |
+| `VITE_UPLOAD_TIMEOUT_MS` | Corte de la subida de una foto, más amplio a propósito |
 
 En `.env.example` quedan comentadas dos más, que no van a producción: `VITE_DEBUG`, para ver los
 logs de sincronización en un build productivo —en desarrollo ya están activos—, y el trío
@@ -67,6 +69,23 @@ permite borrar buckets por SQL.
 Las políticas son "cada usuario ve y escribe lo suyo", comparando contra `auth.uid()`. Un
 supervisor que deba ver la zona completa necesita una política adicional.
 
+Un pedido descartado después de que sus fotos subieron deja archivos sin fila que los referencie.
+Como esta base es temporal y los registros se consolidan luego en el sistema principal, se pueden
+limpiar cada cierto tiempo. Esta consulta los identifica:
+
+```sql
+select o.name, o.created_at
+from storage.objects o
+where o.bucket_id = 'evidence'
+  and not exists (
+    select 1 from public.contingency_orders c
+    where c.id::text = (storage.foldername(o.name))[2]
+  );
+```
+
+El borrado va por la API de Storage o el dashboard: Postgres bloquea el `delete` directo sobre
+`storage.objects`.
+
 La base usa nomenclatura en inglés y el código está en español. La traducción de columnas y de los
 valores de `result` (`entregado` → `delivered`) vive en `pedidosService.supabase.ts`, único punto
 de contacto con los nombres de la base.
@@ -91,14 +110,19 @@ el dominio en Authentication → URL Configuration.
 
 ```
 src/
-  config/          variables de entorno tipadas, selección de adaptador, catálogos
+  config/          variables de entorno tipadas y catálogos administrables
   core/            sin dominio: IndexedDB, http, supabase, storage, red, logging
   features/
     auth/          login, sesión persistida, guard de rutas
-    pedidos/       formulario, cola offline y sincronización
+    orders/        formulario, cola offline y sincronización
   routes/          definición de rutas
   shared/          componentes y estilos transversales
 ```
+
+El código está en inglés —identificadores, tipos, archivos y clases CSS—. Lo único en español son
+los textos que ve el usuario final y los mensajes de error que se le muestran. La excepción es
+`outboxRepository.ts`, que conserva los nombres de campo antiguos para poder leer los pedidos que
+quedaron encolados con una versión previa de la app.
 
 Auth y pedidos exponen las interfaces `AuthService` y `PedidosService`, con dos implementaciones
 cada una: `supabase` y `http`. El barril de cada `services/` elige según `VITE_API_MODE`. Cambiar
@@ -115,6 +139,11 @@ y cada `VITE_SYNC_INTERVAL_MS`. Distingue dos fallos: si es de red corta el cicl
 intento, y si el servidor responde con error marca el pedido y suma uno. Al llegar al tope queda
 esperando el botón *Reintentar ahora* en **Pendientes**, donde también se puede descartar.
 
+Con señal muy débil `navigator.onLine` sigue diciendo `true` y las peticiones se cuelgan en vez de
+fallar. Por eso el cliente de Supabase usa un `fetch` propio que las corta por tiempo, y el ciclo
+libera su bandera en un `finally`: si un envío queda colgado, el siguiente intento entra igual en
+lugar de dejar la cola congelada.
+
 Cada pedido lleva un UUID generado en el cliente, que es su *primary key*, y cada foto el suyo,
 generado al capturarla. Todas las escrituras son `upsert` sobre rutas fijas
 (`evidence/<user_id>/<pedido>/<foto>.jpg`), así que reintentar no duplica registros ni imágenes.
@@ -129,7 +158,7 @@ Con `VITE_API_MODE=http` y `VITE_API_URL`, los contratos esperados son:
 
 - `POST /auth/login` → `{ token, usuario }`
 - `POST /auth/logout`
-- `POST /pedidos` — multipart con `id`, `registro` en JSON y un campo `fotos` repetido por evidencia
+- `POST /orders` — multipart con `id`, `record` en JSON y un campo `photos` repetido por evidencia
 
 Si difieren, se ajustan `authService.http.ts` y `pedidosService.http.ts` sin tocar nada más.
 

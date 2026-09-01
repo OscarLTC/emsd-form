@@ -1,9 +1,9 @@
-import type { AuthService, Credenciales, Sesion } from '../types/auth.types';
+import type { AuthService, AuthSession, Credentials } from '../types/auth.types';
 import { request } from '../../../core/http/httpClient';
 
 export const httpAuthService: AuthService = {
-  login(credenciales: Credenciales): Promise<Sesion> {
-    return request<Sesion>('/auth/login', { method: 'POST', body: credenciales });
+  login(credentials: Credentials): Promise<AuthSession> {
+    return request<AuthSession>('/auth/login', { method: 'POST', body: credentials });
   },
 
   async logout(token: string): Promise<void> {

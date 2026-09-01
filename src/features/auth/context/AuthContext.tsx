@@ -1,91 +1,93 @@
 import { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import type { ReactNode } from 'react';
-import type { Credenciales, Sesion, Usuario } from '../types/auth.types';
+import type { AuthSession, AuthUser, Credentials } from '../types/auth.types';
 import { authService } from '../services';
 import { sessionStore } from '../services/sessionStore';
 
 export interface AuthContextValue {
-  usuario: Usuario | null;
+  user: AuthUser | null;
   token: string | null;
-  autenticado: boolean;
-  inicializando: boolean;
-  autenticando: boolean;
+  isAuthenticated: boolean;
+  isInitializing: boolean;
+  isAuthenticating: boolean;
   error: string | null;
-  login: (credenciales: Credenciales) => Promise<boolean>;
+  login: (credentials: Credentials) => Promise<boolean>;
   logout: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [sesion, setSesion] = useState<Sesion | null>(null);
-  const [inicializando, setInicializando] = useState(true);
-  const [autenticando, setAutenticando] = useState(false);
+  const [session, setSession] = useState<AuthSession | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    let vigente = true;
+    let active = true;
 
-    const restaurar = async () => {
-      const previa = authService.restaurar ? await authService.restaurar().catch(() => null) : sessionStore.read();
-      if (!vigente) return;
-      if (previa) sessionStore.save(previa);
-      setSesion(previa);
-      setInicializando(false);
+    const restore = async () => {
+      const previous = authService.restore
+        ? await authService.restore().catch(() => null)
+        : sessionStore.read();
+      if (!active) return;
+      if (previous) sessionStore.save(previous);
+      setSession(previous);
+      setIsInitializing(false);
     };
 
-    void restaurar();
+    void restore();
 
-    const desuscribir = authService.observarSesion?.((actual) => {
-      if (actual) sessionStore.save(actual);
+    const unsubscribe = authService.observeSession?.((current) => {
+      if (current) sessionStore.save(current);
       else sessionStore.clear();
-      setSesion(actual);
+      setSession(current);
     });
 
     return () => {
-      vigente = false;
-      desuscribir?.();
+      active = false;
+      unsubscribe?.();
     };
   }, []);
 
-  const login = useCallback(async (credenciales: Credenciales): Promise<boolean> => {
-    setAutenticando(true);
+  const login = useCallback(async (credentials: Credentials): Promise<boolean> => {
+    setIsAuthenticating(true);
     setError(null);
     try {
-      const nueva = await authService.login(credenciales);
-      sessionStore.save(nueva);
-      setSesion(nueva);
+      const next = await authService.login(credentials);
+      sessionStore.save(next);
+      setSession(next);
       return true;
-    } catch (causa) {
-      setError(causa instanceof Error ? causa.message : 'No se pudo iniciar sesión');
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : 'No se pudo iniciar sesión');
       return false;
     } finally {
-      setAutenticando(false);
+      setIsAuthenticating(false);
     }
   }, []);
 
   const logout = useCallback(async () => {
-    const token = sesion?.token;
+    const token = session?.token;
     sessionStore.clear();
-    setSesion(null);
+    setSession(null);
     setError(null);
     if (token) {
       await authService.logout(token).catch(() => undefined);
     }
-  }, [sesion]);
+  }, [session]);
 
   const value = useMemo<AuthContextValue>(
     () => ({
-      usuario: sesion?.usuario ?? null,
-      token: sesion?.token ?? null,
-      autenticado: Boolean(sesion),
-      inicializando,
-      autenticando,
+      user: session?.user ?? null,
+      token: session?.token ?? null,
+      isAuthenticated: Boolean(session),
+      isInitializing,
+      isAuthenticating,
       error,
       login,
       logout,
     }),
-    [sesion, inicializando, autenticando, error, login, logout],
+    [session, isInitializing, isAuthenticating, error, login, logout],
   );
 
   return <AuthContext value={value}>{children}</AuthContext>;

@@ -1,16 +1,16 @@
 import { env } from '../../config/env';
 
-function marca(): string {
+function timestamp(): string {
   return new Date().toLocaleTimeString('es-PE', { hour12: false });
 }
 
 export const log = {
-  info(ambito: string, mensaje: string, datos?: unknown): void {
+  info(scope: string, message: string, data?: unknown): void {
     if (!env.debug) return;
-    console.info(`%c${marca()} [${ambito}]`, 'color:#1358d8;font-weight:600', mensaje, datos ?? '');
+    console.info(`%c${timestamp()} [${scope}]`, 'color:#1358d8;font-weight:600', message, data ?? '');
   },
 
-  error(ambito: string, mensaje: string, datos?: unknown): void {
-    console.error(`${marca()} [${ambito}] ${mensaje}`, datos ?? '');
+  error(scope: string, message: string, data?: unknown): void {
+    console.error(`${timestamp()} [${scope}] ${message}`, data ?? '');
   },
 };

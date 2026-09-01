@@ -1,24 +1,24 @@
-export interface Credenciales {
-  usuario: string;
-  clave: string;
+export interface Credentials {
+  username: string;
+  password: string;
 }
 
-export interface Usuario {
+export interface AuthUser {
   id: string;
-  nombre: string;
-  usuario: string;
-  rol: string;
-  zona: string;
+  name: string;
+  username: string;
+  role: string;
+  zone: string;
 }
 
-export interface Sesion {
+export interface AuthSession {
   token: string;
-  usuario: Usuario;
+  user: AuthUser;
 }
 
 export interface AuthService {
-  login(credenciales: Credenciales): Promise<Sesion>;
+  login(credentials: Credentials): Promise<AuthSession>;
   logout(token: string): Promise<void>;
-  restaurar?(): Promise<Sesion | null>;
-  observarSesion?(alCambiar: (sesion: Sesion | null) => void): () => void;
+  restore?(): Promise<AuthSession | null>;
+  observeSession?(onChange: (session: AuthSession | null) => void): () => void;
 }
