@@ -1,9 +1,9 @@
-const MODOS = ['mock', 'http', 'supabase'] as const;
+const MODOS = ['supabase', 'http'] as const;
 
 type ModoApi = (typeof MODOS)[number];
 
 const toModo = (value: string | undefined): ModoApi =>
-  MODOS.includes(value as ModoApi) ? (value as ModoApi) : 'mock';
+  MODOS.includes(value as ModoApi) ? (value as ModoApi) : 'supabase';
 
 const toNumber = (value: string | undefined, fallback: number): number => {
   const parsed = Number(value);

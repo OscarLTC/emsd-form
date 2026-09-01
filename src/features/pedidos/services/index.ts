@@ -1,13 +1,7 @@
-import { modoApi } from '../../../config/adaptadores';
+import { env } from '../../../config/env';
 import type { PedidosService } from '../types/pedido.types';
-import { mockPedidosService } from './pedidosService.mock';
 import { httpPedidosService } from './pedidosService.http';
 import { supabasePedidosService } from './pedidosService.supabase';
 
-const ADAPTADORES: Record<typeof modoApi, PedidosService> = {
-  mock: mockPedidosService,
-  http: httpPedidosService,
-  supabase: supabasePedidosService,
-};
-
-export const pedidosService: PedidosService = ADAPTADORES[modoApi];
+export const pedidosService: PedidosService =
+  env.api.mode === 'http' ? httpPedidosService : supabasePedidosService;

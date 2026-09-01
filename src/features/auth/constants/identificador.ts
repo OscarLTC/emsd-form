@@ -1,7 +1,7 @@
-import { modoApi } from '../../../config/adaptadores';
+import { env } from '../../../config/env';
 
 export const IDENTIFICADOR =
-  modoApi === 'supabase'
+  env.api.mode === 'supabase'
     ? {
         etiqueta: 'Correo',
         tipo: 'email',

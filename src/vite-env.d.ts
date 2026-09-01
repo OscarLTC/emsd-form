@@ -4,7 +4,7 @@
 interface ImportMetaEnv {
   readonly VITE_DEBUG: string;
   readonly VITE_APP_NAME: string;
-  readonly VITE_API_MODE: 'mock' | 'http' | 'supabase';
+  readonly VITE_API_MODE: 'supabase' | 'http';
   readonly VITE_API_URL: string;
   readonly VITE_API_TIMEOUT_MS: string;
   readonly VITE_SUPABASE_URL: string;

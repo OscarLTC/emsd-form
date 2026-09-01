@@ -14,8 +14,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Con `VITE_API_MODE=mock` arranca sin backend ni credenciales. Usuarios de prueba:
-`operador / 123456` y `supervisor / 123456`.
+Necesita un proyecto Supabase configurado para arrancar; el paso siguiente lo detalla.
 
 | Script | Qué hace |
 | --- | --- |
@@ -31,7 +30,7 @@ Con `VITE_API_MODE=mock` arranca sin backend ni credenciales. Usuarios de prueba
 | --- | --- |
 | `VITE_APP_NAME` | Nombre mostrado en el encabezado y el login |
 | `VITE_DEBUG` | `true` activa los logs de sincronización en consola. En `dev` ya están activos |
-| `VITE_API_MODE` | `mock`, `http` o `supabase` |
+| `VITE_API_MODE` | `supabase` (por defecto) o `http` |
 | `VITE_API_URL` | Base de la API propia (solo modo `http`) |
 | `VITE_API_TIMEOUT_MS` | Timeout de cada request |
 | `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Credenciales del proyecto (Project Settings → API) |
@@ -94,10 +93,9 @@ src/
   shared/          componentes y estilos transversales
 ```
 
-Auth y pedidos exponen las interfaces `AuthService` y `PedidosService`, con tres implementaciones
-cada una: `mock`, `http` y `supabase`. `config/adaptadores.ts` elige según `VITE_API_MODE` y cae a
-`mock` con un aviso en consola si falta configuración. Cambiar de backend no toca la UI ni la
-lógica de sincronización.
+Auth y pedidos exponen las interfaces `AuthService` y `PedidosService`, con dos implementaciones
+cada una: `supabase` y `http`. El barril de cada `services/` elige según `VITE_API_MODE`. Cambiar
+de backend no toca la UI ni la lógica de sincronización.
 
 ## Cómo funciona offline
 

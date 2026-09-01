@@ -1,6 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
 import { env } from '../../../config/env';
-import { modoApi } from '../../../config/adaptadores';
 import { Icon } from '../../../shared/components/Icon';
 import { useOnlineStatus } from '../../../core/network/useOnlineStatus';
 import { useAuth } from '../hooks/useAuth';
@@ -27,7 +26,7 @@ export function LoginPage() {
 
         <LoginForm />
 
-        {!online && modoApi !== 'mock' && (
+        {!online && (
           <p className="aviso aviso--error">
             <Icon name="sinSenal" size={18} />
             Sin conexión. Necesitas señal para iniciar sesión; una vez dentro, la sesión queda
