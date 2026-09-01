@@ -24,23 +24,28 @@ Necesita un proyecto Supabase configurado para arrancar; el paso siguiente lo de
 
 ## Variables de entorno
 
-`.env` está ignorado por git; `.env.example` es la plantilla versionada.
+`.env` está ignorado por git; `.env.example` es la plantilla versionada. Solo dos son
+obligatorias; el resto tiene valores por defecto en `src/config/env.ts`.
 
-| Variable | Descripción |
+| Requerida | Descripción |
+| --- | --- |
+| `VITE_SUPABASE_URL` | URL del proyecto, sin rutas ni barra final (Project Settings → API) |
+| `VITE_SUPABASE_ANON_KEY` | Clave `anon` / `public`, nunca la `service_role` |
+
+| Opcional | Descripción |
 | --- | --- |
 | `VITE_APP_NAME` | Nombre mostrado en el encabezado y el login |
-| `VITE_DEBUG` | `true` activa los logs de sincronización en consola. En `dev` ya están activos |
-| `VITE_API_MODE` | `supabase` (por defecto) o `http` |
-| `VITE_API_URL` | Base de la API propia (solo modo `http`) |
-| `VITE_API_TIMEOUT_MS` | Timeout de cada request |
-| `VITE_SUPABASE_URL` / `VITE_SUPABASE_ANON_KEY` | Credenciales del proyecto (Project Settings → API) |
 | `VITE_SUPABASE_BUCKET` | Bucket de evidencias fotográficas |
-| `VITE_SESSION_STORAGE_KEY` | Clave con la que se persiste la sesión |
 | `VITE_SESSION_TTL_HOURS` | Vigencia de la sesión cacheada |
 | `VITE_SYNC_INTERVAL_MS` | Cada cuánto se reintenta vaciar la cola |
 | `VITE_SYNC_MAX_ATTEMPTS` | Intentos antes de marcar un pedido como fallido |
 | `VITE_PHOTO_MAX_COUNT` | Máximo de fotos de evidencia por pedido |
 | `VITE_PHOTO_MAX_WIDTH` / `VITE_PHOTO_QUALITY` | Compresión aplicada a cada foto |
+
+En `.env.example` quedan comentadas dos más, que no van a producción: `VITE_DEBUG`, para ver los
+logs de sincronización en un build productivo —en desarrollo ya están activos—, y el trío
+`VITE_API_MODE` / `VITE_API_URL` / `VITE_API_TIMEOUT_MS`, que solo aplica si se usa una API propia
+en vez de Supabase.
 
 Todas las `VITE_*` se resuelven en tiempo de build y quedan dentro del bundle. No pongas secretos
 ahí: la `anon key` de Supabase es pública por diseño y la protección real son las políticas RLS.
@@ -73,8 +78,10 @@ de contacto con los nombres de la base.
 caché — los assets con hash quedan inmutables y el service worker sin caché, para que una versión
 nueva llegue al celular sin desinstalar la app.
 
-Antes del primer deploy hay que cargar las variables en Project Settings → Environment Variables,
-porque `.env` no se versiona. Como se leen en build, cambiar una exige redeploy.
+Antes del primer deploy hay que cargar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` en Project
+Settings → Environment Variables, porque `.env` no se versiona. Las opcionales solo si quieres
+cambiar un valor por defecto, y `VITE_DEBUG` no debería cargarse nunca ahí. Como se leen en build,
+modificar cualquiera exige redeploy.
 
 No hace falta configurar redirect URLs en Supabase: el login es por correo y contraseña, sin OAuth
 ni magic links. Si más adelante se agrega recuperación de contraseña, ahí sí habrá que registrar
