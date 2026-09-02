@@ -6,6 +6,7 @@ import { createId } from '../../../core/utils/id';
 import { useOnlineStatus } from '../../../core/network/useOnlineStatus';
 import { useAuth } from '../../auth/hooks/useAuth';
 import { syncService } from '../sync/syncService';
+import { FIELD_LIMITS } from '../constants/fieldLimits';
 import type { DeliveryResult, EvidencePhoto, QueueItem } from '../types/order.types';
 
 interface FormValues {
@@ -35,13 +36,29 @@ const INITIAL_VALUES: FormValues = {
 
 type FormErrors = Partial<Record<keyof FormValues, string>>;
 
+const tooLong = (value: string, limit: number) => value.trim().length > limit;
+
 function validate(values: FormValues): FormErrors {
   const errors: FormErrors = {};
+
   if (!values.orderNumber.trim()) errors.orderNumber = 'Ingresa el número de pedido';
+  else if (tooLong(values.orderNumber, FIELD_LIMITS.orderNumber))
+    errors.orderNumber = `Máximo ${FIELD_LIMITS.orderNumber} caracteres`;
+
   if (!values.customer.trim()) errors.customer = 'Ingresa el cliente';
+  else if (tooLong(values.customer, FIELD_LIMITS.customer))
+    errors.customer = `Máximo ${FIELD_LIMITS.customer} caracteres`;
+
   if (!values.address.trim()) errors.address = 'Ingresa la dirección';
+  else if (tooLong(values.address, FIELD_LIMITS.address))
+    errors.address = `Máximo ${FIELD_LIMITS.address} caracteres`;
+
+  if (tooLong(values.comment, FIELD_LIMITS.comment))
+    errors.comment = `Máximo ${FIELD_LIMITS.comment} caracteres`;
+
   if (!values.result) errors.result = 'Selecciona un resultado';
   if (requiresReason(values.result) && !values.reason) errors.reason = 'Selecciona un motivo';
+
   return errors;
 }
 

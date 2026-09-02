@@ -150,7 +150,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: oklch(0.2732 0.0953 263.48 / 0.55);
+  background: var(--backdrop);
 }
 
 .menu__panel {
@@ -225,7 +225,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: oklch(0.2732 0.0953 263.48 / 0.55);
+  background: var(--backdrop);
 }
 
 .modal__panel {
@@ -238,7 +238,7 @@
   padding: 24px 20px 20px;
   border-radius: 16px;
   background: var(--surface);
-  box-shadow: 0 20px 48px oklch(0.2732 0.0953 263.48 / 0.28);
+  box-shadow: var(--shadow-lifted);
   text-align: center;
 }
 
@@ -276,7 +276,7 @@
   position: absolute;
   inset: 0;
   border: 0;
-  background: oklch(0.2732 0.0953 263.48 / 0.6);
+  background: var(--backdrop);
 }
 
 .dialog__panel {
@@ -286,7 +286,7 @@
   padding: 22px 20px 18px;
   border-radius: 16px;
   background: var(--surface);
-  box-shadow: 0 20px 48px oklch(0.2732 0.0953 263.48 / 0.28);
+  box-shadow: var(--shadow-lifted);
   text-align: center;
 }
 
@@ -329,7 +329,7 @@
 
 .button--danger {
   background: var(--red);
-  color: var(--on-navy);
+  color: var(--white);
 }
 
 .button--danger:hover:not(:disabled) {

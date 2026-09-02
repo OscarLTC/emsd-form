@@ -5,6 +5,7 @@ import { ResultSelector } from './ResultSelector';
 import { PhotoEvidence } from './PhotoEvidence';
 import { reasonsFor } from '../../../config/catalogs/reasons';
 import { useOrderForm } from '../hooks/useOrderForm';
+import { FIELD_LIMITS } from '../constants/fieldLimits';
 
 export function OrderForm() {
   const {
@@ -41,6 +42,7 @@ export function OrderForm() {
           placeholder="#PED-000123"
           autoComplete="off"
           inputMode="text"
+          maxLength={FIELD_LIMITS.orderNumber}
         />
       </Field>
 
@@ -56,6 +58,7 @@ export function OrderForm() {
           onChange={(event) => update('customer', event.target.value)}
           placeholder="Nombre del cliente"
           autoComplete="off"
+          maxLength={FIELD_LIMITS.customer}
         />
         <input
           id="address"
@@ -63,6 +66,7 @@ export function OrderForm() {
           onChange={(event) => update('address', event.target.value)}
           placeholder="Dirección de entrega"
           autoComplete="off"
+          maxLength={FIELD_LIMITS.address}
         />
       </Field>
 
@@ -91,13 +95,13 @@ export function OrderForm() {
         <PhotoEvidence photos={photos} onAdd={addPhotos} onRemove={removePhoto} />
       </Field>
 
-      <Field icon="comment" label="Comentario breve" htmlFor="comment">
+      <Field icon="comment" label="Comentario breve" htmlFor="comment" error={errors.comment}>
         <textarea
           id="comment"
           value={values.comment}
           onChange={(event) => update('comment', event.target.value)}
           placeholder="Escribe un comentario breve…"
-          maxLength={280}
+          maxLength={FIELD_LIMITS.comment}
         />
       </Field>
 

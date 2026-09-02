@@ -76,6 +76,15 @@ create table if not exists public.contingency_orders (
 alter table public.contingency_orders drop column if exists photo_path;
 alter table public.contingency_orders add column if not exists photo_paths text[] not null default '{}';
 
+-- Mismos límites que FIELD_LIMITS en el cliente.
+alter table public.contingency_orders drop constraint if exists contingency_orders_lengths;
+alter table public.contingency_orders add constraint contingency_orders_lengths check (
+  char_length(order_number) <= 60
+  and char_length(customer) <= 100
+  and char_length(address) <= 100
+  and (comment is null or char_length(comment) <= 280)
+);
+
 create index if not exists contingency_orders_user_idx
   on public.contingency_orders (user_id, recorded_at desc);
 

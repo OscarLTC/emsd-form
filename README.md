@@ -16,33 +16,33 @@ npm run dev
 
 Necesita un proyecto Supabase configurado para arrancar; el paso siguiente lo detalla.
 
-| Script | Qué hace |
-| --- | --- |
-| `npm run dev` | Servidor de desarrollo. Expuesto en la red local para probar desde el celular |
-| `npm run build` | Verifica tipos con `tsc` y genera `dist/` |
-| `npm run preview` | Sirve `dist/` para revisar el build de producción |
+| Script            | Qué hace                                                                      |
+| ----------------- | ----------------------------------------------------------------------------- |
+| `npm run dev`     | Servidor de desarrollo. Expuesto en la red local para probar desde el celular |
+| `npm run build`   | Verifica tipos con `tsc` y genera `dist/`                                     |
+| `npm run preview` | Sirve `dist/` para revisar el build de producción                             |
 
 ## Variables de entorno
 
 `.env` está ignorado por git; `.env.example` es la plantilla versionada. Solo dos son
 obligatorias; el resto tiene valores por defecto en `src/config/env.ts`.
 
-| Requerida | Descripción |
-| --- | --- |
-| `VITE_SUPABASE_URL` | URL del proyecto, sin rutas ni barra final (Project Settings → API) |
-| `VITE_SUPABASE_ANON_KEY` | Clave `anon` / `public`, nunca la `service_role` |
+| Requerida                | Descripción                                                         |
+| ------------------------ | ------------------------------------------------------------------- |
+| `VITE_SUPABASE_URL`      | URL del proyecto, sin rutas ni barra final (Project Settings → API) |
+| `VITE_SUPABASE_ANON_KEY` | Clave `anon` / `public`, nunca la `service_role`                    |
 
-| Opcional | Descripción |
-| --- | --- |
-| `VITE_APP_NAME` | Nombre mostrado en el encabezado y el login |
-| `VITE_SUPABASE_BUCKET` | Bucket de evidencias fotográficas |
-| `VITE_SESSION_TTL_HOURS` | Vigencia de la sesión cacheada |
-| `VITE_SYNC_INTERVAL_MS` | Cada cuánto se reintenta vaciar la cola |
-| `VITE_SYNC_MAX_ATTEMPTS` | Intentos antes de marcar un pedido como fallido |
-| `VITE_PHOTO_MAX_COUNT` | Máximo de fotos de evidencia por pedido |
-| `VITE_PHOTO_MAX_WIDTH` / `VITE_PHOTO_QUALITY` | Compresión aplicada a cada foto |
-| `VITE_REQUEST_TIMEOUT_MS` | Corte de una petición normal a Supabase |
-| `VITE_UPLOAD_TIMEOUT_MS` | Corte de la subida de una foto, más amplio a propósito |
+| Opcional                                      | Descripción                                            |
+| --------------------------------------------- | ------------------------------------------------------ |
+| `VITE_APP_NAME`                               | Nombre mostrado en el encabezado y el login            |
+| `VITE_SUPABASE_BUCKET`                        | Bucket de evidencias fotográficas                      |
+| `VITE_SESSION_TTL_HOURS`                      | Vigencia de la sesión cacheada                         |
+| `VITE_SYNC_INTERVAL_MS`                       | Cada cuánto se reintenta vaciar la cola                |
+| `VITE_SYNC_MAX_ATTEMPTS`                      | Intentos antes de marcar un pedido como fallido        |
+| `VITE_PHOTO_MAX_COUNT`                        | Máximo de fotos de evidencia por pedido                |
+| `VITE_PHOTO_MAX_WIDTH` / `VITE_PHOTO_QUALITY` | Compresión aplicada a cada foto                        |
+| `VITE_REQUEST_TIMEOUT_MS`                     | Corte de una petición normal a Supabase                |
+| `VITE_UPLOAD_TIMEOUT_MS`                      | Corte de la subida de una foto, más amplio a propósito |
 
 En `.env.example` quedan comentadas dos más, que no van a producción: `VITE_DEBUG`, para ver los
 logs de sincronización en un build productivo —en desarrollo ya están activos—, y el trío
@@ -58,7 +58,7 @@ La `service_role` key no debe aparecer nunca en el frontend.
 1. Copiar `VITE_SUPABASE_URL` y `VITE_SUPABASE_ANON_KEY` al `.env`.
 2. Ejecutar `supabase/schema.sql` completo en el SQL Editor. Crea `profiles`,
    `contingency_orders`, el bucket privado `evidence` y las políticas RLS.
-3. Crear los usuarios en Authentication → Users con *Auto Confirm User* activado. El trigger
+3. Crear los usuarios en Authentication → Users con _Auto Confirm User_ activado. El trigger
    `handle_new_user` genera el perfil; `name`, `role` y `zone` se leen de `raw_user_meta_data`
    si se envían al crear la cuenta.
 
@@ -128,6 +128,12 @@ Auth y pedidos exponen las interfaces `AuthService` y `PedidosService`, con dos 
 cada una: `supabase` y `http`. El barril de cada `services/` elige según `VITE_API_MODE`. Cambiar
 de backend no toca la UI ni la lógica de sincronización.
 
+## Límites de los campos
+
+`features/orders/constants/fieldLimits.ts` es la fuente única: número de pedido 60 caracteres,
+cliente y dirección 100 cada uno, comentario 280. De ahí salen el `maxLength` de cada input y las
+validaciones del formulario, y `schema.sql` los repite como check constraint en la tabla.
+
 ## Cómo funciona offline
 
 Enviar nunca depende de la conexión. El pedido se guarda primero en IndexedDB —las fotos como
@@ -137,14 +143,14 @@ cambia el mensaje de confirmación.
 La sincronización se dispara sola al guardar, al recuperar señal, al volver la app a primer plano
 y cada `VITE_SYNC_INTERVAL_MS`. Distingue dos fallos: si es de red corta el ciclo sin gastar
 intento, y si el servidor responde con error marca el pedido y suma uno. Al llegar al tope queda
-esperando el botón *Reintentar ahora* en **Pendientes**, donde también se puede descartar.
+esperando el botón _Reintentar ahora_ en **Pendientes**, donde también se puede descartar.
 
 Con señal muy débil `navigator.onLine` sigue diciendo `true` y las peticiones se cuelgan en vez de
 fallar. Por eso el cliente de Supabase usa un `fetch` propio que las corta por tiempo, y el ciclo
 libera su bandera en un `finally`: si un envío queda colgado, el siguiente intento entra igual en
 lugar de dejar la cola congelada.
 
-Cada pedido lleva un UUID generado en el cliente, que es su *primary key*, y cada foto el suyo,
+Cada pedido lleva un UUID generado en el cliente, que es su _primary key_, y cada foto el suyo,
 generado al capturarla. Todas las escrituras son `upsert` sobre rutas fijas
 (`evidence/<user_id>/<pedido>/<foto>.jpg`), así que reintentar no duplica registros ni imágenes.
 
